@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch LauncherGUI",
+            "request": "launch",
+            "mainClass": "QuickStart.LauncherGUI",
+            "vmArgs": "--module-path \"c:\\JavaFX-\\javafx-sdk-25\\lib\" --add-modules javafx.controls,javafx.fxml"
+        }
+    ]
+}
