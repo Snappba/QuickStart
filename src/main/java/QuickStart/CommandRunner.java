@@ -3,75 +3,79 @@ package QuickStart;
 import java.io.File;
 
 public class CommandRunner {
-    // The command to run (either a URL or the path to an executable)
     private String command;
-    
-    // The type of command: "app" for executables, "url" for web links
     private String type;
-    
-    // Tracks whether the last execution was successful
     private boolean executionResult;
 
-    // Constructor: initialize the command and its type
     public CommandRunner(String command, String type) {
         this.command = command;
         this.type = type.toLowerCase();
-        this.executionResult = false; // default to false until executed
+        this.executionResult = false;
     }
 
-    // Validate the command: check if it's a valid URL or existing file
     public boolean validate() {
+        System.out.println("[DEBUG] validate() called for type='" + type + "' command='" + command + "'");
         if (type.equals("url")) {
-            // URL is valid if it starts with http:// or https://
             executionResult = command.startsWith("http://") || command.startsWith("https://");
         } else if (type.equals("app")) {
-            // App is valid if the file exists and is a file (not a directory)
             File f = new File(command);
+            System.out.println("check file path: " + f.getAbsolutePath());
+            System.out.println("file exists" + f.exists());
+            System.out.println("is file" + f.isFile());
             executionResult = f.exists() && f.isFile();
         } else {
-            // Invalid type
             executionResult = false;
         }
         return executionResult;
     }
 
-    // Execute the command (either open the URL or launch the app)
     public boolean execute() {
-        if (!validate()) return false; // don't execute invalid commands
+        System.out.println("[DEBUG] Executing command: " + command + " (type: " + type + ")"); // DEBUG
+
+        if (!validate()) {
+            System.err.println("[DEBUG] Validation failed for: " + command); // DEBUG
+            return false;
+        }
 
         try {
             if (type.equals("url")) {
-                // Open the URL in the default browser
+                System.out.println("[DEBUG] Launching URL: " + command); // DEBUG
                 java.awt.Desktop.getDesktop().browse(new java.net.URI(command));
             } else if (type.equals("app")) {
-                // Launch the application using ProcessBuilder
-                ProcessBuilder pb = new ProcessBuilder(command);
-                pb.start();
+                File exeFile = new File(command);
+                if (!exeFile.exists()) {
+                    System.err.println("[DEBUG] Executable not found: " + exeFile.getAbsolutePath()); // DEBUG
+                    return false;
+                }
+
+                System.out.println("[DEBUG] Starting executable: " + exeFile.getAbsolutePath()); // DEBUG
+                ProcessBuilder pb = new ProcessBuilder(exeFile.getAbsolutePath());
+                pb.directory(exeFile.getParentFile());
+                pb.inheritIO();
+                Process process = pb.start();
+
+                System.out.println("[DEBUG] Process started with PID (approx): " + process.pid()); // DEBUG
             } else {
-                return false; // unknown type
+                System.err.println("[DEBUG] Unknown command type: " + type); // DEBUG
+                return false;
             }
-            executionResult = true; // mark execution as successful
+
+            executionResult = true;
         } catch (Exception e) {
-            executionResult = false; // mark execution as failed
+            executionResult = false;
+            System.err.println("[DEBUG] Exception while executing command:");
             e.printStackTrace();
         }
+
         return executionResult;
     }
 
-    // Getter for executionResult
-    public boolean getExecutionResult() {
-        return executionResult;
-    }
-
-    // Human-readable representation of the command
     @Override
     public String toString() {
         return command + " (" + type + ")";
     }
 
-    // Getter for command string
+    public boolean getExecutionResult() { return executionResult; }
     public String getCommand() { return command; }
-
-    // Getter for type string
     public String getType() { return type; }
 }

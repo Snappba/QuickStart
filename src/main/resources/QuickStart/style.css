@@ -1,0 +1,70 @@
+/* Base dark mode for the whole layout */
+.dark {
+    -fx-background-color: #2b2b2b;
+    background-color: #2b2b2b;
+    -fx-base: #2b2b2b;
+    -fx-text-fill: #ffffff;
+}
+
+/* Containers */
+.dark .hbox, .dark .vbox {
+    -fx-background-color: #3a3a3a;  /* slightly lighter than base */
+    background-color: #3a3a3a;
+    -fx-padding: 10;
+    padding: 10;
+    -fx-background-radius: 5;
+}
+
+/* Buttons */
+.dark .button {
+    -fx-background-color: #4a4a4a;
+    background-color: #4a4a4a;
+    -fx-text-fill: #ffffff;
+}
+
+/* ComboBox */
+.dark .combo-box {
+    -fx-background-color: #4a4a4a;
+    background-color: #4a4a4a;
+    -fx-text-fill: #ffffff;
+}
+
+/* ListView */
+.dark .list-view {
+    -fx-background-color: #3a3a3a;
+    background-color: #3a3a3a;
+    -fx-control-inner-background: #3a3a3a;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #555555;
+    border-color: #555555;
+    -fx-border-radius: 5;
+    border-radius: 5;
+}
+
+/* Light mode overrides */
+.light {
+    -fx-background-color: #ffffff;
+    background-color: #ffffff;
+    -fx-base: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+.light .hbox, .light .vbox {
+    -fx-background-color: #eeeeee;
+    background-color: #eeeeee;
+}
+
+.light .button, .light .combo-box {
+    -fx-background-color: #dddddd;
+    background-color: #dddddd;
+    -fx-text-fill: #000000;
+}
+
+.light .list-view {
+    -fx-background-color: #eeeeee;
+    background-color: #eeeeee;
+    -fx-control-inner-background: #eeeeee;
+    -fx-text-fill: #000000;
+    -fx-border-color: #cccccc;
+    border-color: #cccccc;
+}
